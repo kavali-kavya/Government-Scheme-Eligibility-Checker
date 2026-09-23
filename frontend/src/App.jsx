@@ -6,7 +6,7 @@ import AllSchemes from './components/AllSchemes'
 import SavedSchemes from './components/SavedSchemes'
 import './App.css'
 
-const API_URL = 'http://127.0.0.1:5000'
+const API_URL = 'https://government-scheme-backend-v6kw.onrender.com'
 
 // Unicode escape sequences keep Indian-language text reliable in all editors.
 const copy = {
