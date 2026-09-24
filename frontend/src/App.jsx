@@ -142,6 +142,7 @@ const copy = {
 function Dashboard({ onNavigate }) {
   const [language, setLanguage] = useState('en')
   const [schemes, setSchemes] = useState([])
+  const [nearMisses, setNearMisses] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [hasSearched, setHasSearched] = useState(false)
@@ -152,6 +153,7 @@ function Dashboard({ onNavigate }) {
     setLoading(true)
     setError('')
     setHasSearched(false)
+    setNearMisses([])
 
     try {
       const response = await fetch(`${API_URL}/api/check-eligibility`, {
@@ -168,14 +170,35 @@ function Dashboard({ onNavigate }) {
         throw new Error(data.error || t.errorText)
       }
 
-      setSchemes(data.matching_schemes || [])
+      setSchemes(data.eligible || data.matching_schemes || [])
+      setNearMisses(data.near_misses || [])
       setHasSearched(true)
     } catch (requestError) {
       setError(requestError.message || t.errorText)
       setSchemes([])
+      setNearMisses([])
     } finally {
       setLoading(false)
     }
+  }
+
+  function shareEligibleSchemes() {
+    const shareText = [
+      'Eligible government schemes:',
+      ...schemes.map((scheme) =>
+        [scheme.scheme_name, scheme.official_website].filter(Boolean).join('\n'),
+      ),
+    ].join('\n\n')
+
+    window.open(
+      `https://wa.me/?text=${encodeURIComponent(shareText)}`,
+      '_blank',
+      'noopener,noreferrer',
+    )
+  }
+
+  function printResults() {
+    window.print()
   }
 
   return (
@@ -298,6 +321,7 @@ function Dashboard({ onNavigate }) {
             >
               {schemes.length ? (
                 <>
+                  <div className="printable-results">
                   <div className="results-heading">
                     <div>
                       <p className="eyebrow">
@@ -321,8 +345,19 @@ function Dashboard({ onNavigate }) {
                         key={scheme.scheme_name}
                         scheme={scheme}
                         language={language}
+                        matchReasons={scheme.match_reasons || []}
                       />
                     ))}
+                  </div>
+                  </div>
+
+                  <div className="results-actions no-print">
+                    <button type="button" onClick={shareEligibleSchemes}>
+                      Share on WhatsApp
+                    </button>
+                    <button type="button" onClick={printResults}>
+                      Download / Print results
+                    </button>
                   </div>
                 </>
               ) : (
@@ -339,6 +374,32 @@ function Dashboard({ onNavigate }) {
                     <p>{t.noText}</p>
                   </div>
                 </div>
+              )}
+
+              {nearMisses.length > 0 && (
+                <section
+                  className="near-miss-section"
+                  aria-labelledby="near-misses-title"
+                >
+                  <div className="results-heading near-miss-heading">
+                    <div>
+                      <p className="eyebrow">A little more to go</p>
+                      <h2 id="near-misses-title">Almost eligible</h2>
+                    </div>
+                    <p>These schemes are close to matching your profile.</p>
+                  </div>
+
+                  <div className="scheme-grid">
+                    {nearMisses.map((scheme) => (
+                      <SchemeCard
+                        key={scheme.scheme_name}
+                        scheme={scheme}
+                        language={language}
+                        missReason={scheme.miss_reason}
+                      />
+                    ))}
+                  </div>
+                </section>
               )}
             </section>
           )}

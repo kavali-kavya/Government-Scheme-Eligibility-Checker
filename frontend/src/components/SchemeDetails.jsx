@@ -17,6 +17,12 @@ function SchemeDetails({ scheme, onClose }) {
 
         <h2>{scheme.scheme_name}</h2>
 
+        {scheme.last_verified && (
+          <p className="scheme-verified-date">
+            Last verified: {scheme.last_verified}
+          </p>
+        )}
+
         <div className="scheme-detail-section">
           <h3>💰 Benefit</h3>
           <p>
@@ -54,6 +60,15 @@ function SchemeDetails({ scheme, onClose }) {
             Visit Official Website →
           </a>
         )}
+
+        <a
+          className="report-wrong-information"
+          href="https://forms.gle/F2gdThUbKQaEXdq18"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Report wrong information: {scheme.scheme_name}
+        </a>
       </div>
     </div>
   )

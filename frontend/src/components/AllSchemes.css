@@ -360,3 +360,29 @@
 .view-details-button:hover {
   background: #1763a7;
 }
+
+.scheme-verified-date {
+  margin: -14px 0 22px;
+  color: #738398;
+  font-size: 0.76rem;
+}
+
+.report-wrong-information {
+  display: block;
+  width: fit-content;
+  margin-top: 18px;
+  color: #61748a;
+  font-size: 0.78rem;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.report-wrong-information:hover {
+  color: #245b91;
+}
+
+@media (max-width: 600px) {
+  .report-wrong-information {
+    max-width: 100%;
+  }
+}
