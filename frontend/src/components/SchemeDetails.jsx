@@ -1,3 +1,5 @@
+import ScamWarning from './ScamWarning'
+
 function SchemeDetails({ scheme, onClose }) {
   if (!scheme) return null
 
@@ -49,6 +51,8 @@ function SchemeDetails({ scheme, onClose }) {
             Occupation: {scheme.occupation || 'All'}
           </p>
         </div>
+
+        <ScamWarning />
 
         {scheme.official_website && (
           <a

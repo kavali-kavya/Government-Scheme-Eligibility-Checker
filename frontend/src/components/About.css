@@ -89,6 +89,14 @@
   color: #103f70;
 }
 
+.about-scam-warning {
+  grid-column: 1 / -1;
+}
+
+.about-scam-warning .scam-warning {
+  margin: 0;
+}
+
 @media (max-width: 700px) {
   .about-content {
     grid-template-columns: 1fr;

@@ -5,6 +5,7 @@ import SchemeCard from './components/SchemeCard'
 import AllSchemes from './components/AllSchemes'
 import SavedSchemes from './components/SavedSchemes'
 import About from './components/About'
+import ScamWarning from './components/ScamWarning'
 import './App.css'
 
 const API_URL = 'https://government-scheme-backend-v6kw.onrender.com'
@@ -412,6 +413,7 @@ function Dashboard({ onNavigate }) {
               <p className="results-page-disclaimer">
                 Information may change. Please confirm on the official website.
               </p>
+              <ScamWarning />
             </section>
           )}
         <section className="all-schemes-section">

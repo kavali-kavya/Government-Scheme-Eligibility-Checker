@@ -1,4 +1,5 @@
 import './About.css'
+import ScamWarning from './ScamWarning'
 
 const REPORT_FORM_URL = 'https://forms.gle/F2gdThUbKQaEXdq18'
 
@@ -80,6 +81,10 @@ function About({ onBack }) {
             Scheme rules, amounts and dates can change often. Always confirm the
             details on the official website before applying.
           </p>
+        </section>
+
+        <section className="about-scam-warning" aria-label="Scam awareness">
+          <ScamWarning />
         </section>
 
         <section className="about-panel about-report-panel">

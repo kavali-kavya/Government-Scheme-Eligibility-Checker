@@ -1,0 +1,44 @@
+.scam-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 22px 0 0;
+  padding: 15px 17px;
+  border: 1px solid #f0d89f;
+  border-left: 4px solid #d99413;
+  border-radius: 9px;
+  background: #fff9eb;
+  color: #66532c;
+}
+
+.scam-warning-icon {
+  display: grid;
+  flex: 0 0 24px;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #fff0c9;
+  color: #9a680c;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.scam-warning p {
+  margin: 1px 0 0;
+  color: inherit;
+  font-size: 0.84rem;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+@media (max-width: 580px) {
+  .scam-warning {
+    gap: 9px;
+    padding: 13px;
+  }
+
+  .scam-warning p {
+    font-size: 0.8rem;
+  }
+}
