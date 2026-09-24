@@ -3,6 +3,13 @@ import ScamWarning from './ScamWarning'
 function SchemeDetails({ scheme, onClose }) {
   if (!scheme) return null
 
+  const documentsRequired = Array.isArray(scheme.documents_required)
+    ? scheme.documents_required
+    : []
+  const howToApply = scheme.how_to_apply?.trim()
+  const applyAt = scheme.apply_at?.trim()
+  const hasApplyInfo = documentsRequired.length > 0 || howToApply || applyAt
+
   return (
     <div className="scheme-modal-overlay" onClick={onClose}>
       <div
@@ -51,6 +58,45 @@ function SchemeDetails({ scheme, onClose }) {
             Occupation: {scheme.occupation || 'All'}
           </p>
         </div>
+
+        {documentsRequired.length > 0 && (
+          <div className="scheme-detail-section">
+            <h3>Documents you need</h3>
+            <ul className="scheme-document-checklist">
+              {documentsRequired.map((document, index) => (
+                <li key={`${document}-${index}`}>
+                  <label>
+                    <input
+                      type="checkbox"
+                      aria-label={`Mark ${document} as ready`}
+                    />
+                    <span>{document}</span>
+                  </label>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {howToApply && (
+          <div className="scheme-detail-section">
+            <h3>How to apply</h3>
+            <p>{howToApply}</p>
+          </div>
+        )}
+
+        {applyAt && (
+          <div className="scheme-detail-section">
+            <h3>Where to apply</h3>
+            <p>{applyAt}</p>
+          </div>
+        )}
+
+        {hasApplyInfo && (
+          <p className="scheme-apply-note">
+            Steps can change. Please confirm on the official website before applying.
+          </p>
+        )}
 
         <ScamWarning />
 

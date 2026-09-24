@@ -51,9 +51,24 @@ class SchemeEligibilityTests(unittest.TestCase):
     def test_dataset_has_requested_columns_and_84_schemes(self):
         schemes = scheme_app.load_schemes()
         self.assertEqual(len(schemes), 84)
-        self.assertEqual(tuple(schemes[0]), scheme_app.SCHEME_FIELDS)
-        self.assertTrue(all(len(scheme) == 18 for scheme in schemes))
+        self.assertEqual(tuple(schemes[0])[: len(scheme_app.SCHEME_FIELDS)], scheme_app.SCHEME_FIELDS)
+        self.assertTrue(all(len(scheme) == 21 for scheme in schemes))
         self.assertTrue(all(scheme["last_verified"] == "2026-09" for scheme in schemes))
+
+    def test_all_84_schemes_get_application_information(self):
+        schemes = scheme_app.load_schemes()
+        self.assertEqual(len(schemes), 84)
+        self.assertTrue(
+            all(
+                scheme["documents_required"]
+                and scheme["how_to_apply"]
+                and scheme["apply_at"]
+                for scheme in schemes
+            )
+        )
+        self.assertTrue(
+            all(isinstance(scheme["documents_required"], list) for scheme in schemes)
+        )
 
     def test_age_min_and_max_are_inclusive(self):
         scheme = make_scheme(age_min="30", age_max="30")
@@ -238,9 +253,15 @@ class SchemeEligibilityTests(unittest.TestCase):
                 "eligibility",
                 "official_website",
                 "last_verified",
+                "documents_required",
+                "how_to_apply",
+                "apply_at",
                 "match_reasons",
             },
         )
+        self.assertEqual(card["documents_required"], [])
+        self.assertEqual(card["how_to_apply"], "")
+        self.assertEqual(card["apply_at"], "")
 
     def test_schemes_api_includes_verification_date(self):
         response = scheme_app.app.test_client().get("/api/schemes")
@@ -248,6 +269,15 @@ class SchemeEligibilityTests(unittest.TestCase):
         schemes = response.get_json()["schemes"]
         self.assertEqual(len(schemes), 84)
         self.assertTrue(all(scheme["last_verified"] == "2026-09" for scheme in schemes))
+        self.assertTrue(
+            all(
+                isinstance(scheme["documents_required"], list)
+                and scheme["documents_required"]
+                and scheme["how_to_apply"]
+                and scheme["apply_at"]
+                for scheme in schemes
+            )
+        )
 
 
 if __name__ == "__main__":

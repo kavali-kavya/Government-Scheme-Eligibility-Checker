@@ -12,6 +12,9 @@ app = Flask(__name__)
 CORS(app)
 
 CSV_PATH = Path(__file__).resolve().parent.parent / "data" / "government_schemes.csv"
+APPLY_INFO_CSV_PATH = (
+    Path(__file__).resolve().parent.parent / "data" / "scheme_apply_info.csv"
+)
 SCHEME_FIELDS = (
     "scheme_name",
     "category",
@@ -35,15 +38,60 @@ SCHEME_FIELDS = (
 
 
 def load_schemes():
-    """Load all scheme fields while preserving blank CSV cells as empty strings."""
+    """Load schemes and merge exact-name application details from the companion CSV."""
+    apply_info = load_apply_info()
     with CSV_PATH.open("r", encoding="utf-8-sig", newline="") as schemes_file:
         reader = csv.DictReader(schemes_file)
         if tuple(reader.fieldnames or ()) != SCHEME_FIELDS:
             raise ValueError("The schemes CSV does not have the expected columns.")
-        return [
-            {field: (row.get(field) or "").strip() for field in SCHEME_FIELDS}
+        schemes = []
+        for row in reader:
+            scheme = {
+                field: (row.get(field) or "").strip()
+                for field in SCHEME_FIELDS
+            }
+            scheme.update(
+                apply_info.get(
+                    scheme["scheme_name"],
+                    {
+                        "documents_required": [],
+                        "how_to_apply": "",
+                        "apply_at": "",
+                    },
+                )
+            )
+            schemes.append(scheme)
+        return schemes
+
+
+def load_apply_info():
+    """Load the optional application details, keyed by exact scheme name."""
+    with APPLY_INFO_CSV_PATH.open(
+        "r", encoding="utf-8-sig", newline=""
+    ) as apply_info_file:
+        reader = csv.DictReader(apply_info_file)
+        expected_fields = (
+            "scheme_name",
+            "documents_required",
+            "how_to_apply",
+            "apply_at",
+        )
+        if tuple(reader.fieldnames or ()) != expected_fields:
+            raise ValueError("The scheme apply info CSV does not have the expected columns.")
+
+        return {
+            (row.get("scheme_name") or "").strip(): {
+                "documents_required": [
+                    document.strip()
+                    for document in (row.get("documents_required") or "").split("|")
+                    if document.strip()
+                ],
+                "how_to_apply": (row.get("how_to_apply") or "").strip(),
+                "apply_at": (row.get("apply_at") or "").strip(),
+            }
             for row in reader
-        ]
+            if (row.get("scheme_name") or "").strip()
+        }
 
 
 def normalise(value):
@@ -97,7 +145,15 @@ def public_scheme(scheme):
         "official_website",
         "last_verified",
     )
-    return {field: scheme.get(field, "") or "" for field in fields}
+    result = {field: scheme.get(field, "") or "" for field in fields}
+    result.update(
+        {
+            "documents_required": scheme.get("documents_required") or [],
+            "how_to_apply": scheme.get("how_to_apply", "") or "",
+            "apply_at": scheme.get("apply_at", "") or "",
+        }
+    )
+    return result
 
 
 def normalise_user_profile(user):

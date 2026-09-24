@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import './AllSchemes.css'
 import SchemeDetails from "./SchemeDetails";
-const API_URL = 'http://127.0.0.1:5000'
+const API_URL = 'https://government-scheme-backend-v6kw.onrender.com'
 const formatAgeBound = (value) =>
   value === null || value === undefined || String(value).trim() === ''
     ? 'Any'
