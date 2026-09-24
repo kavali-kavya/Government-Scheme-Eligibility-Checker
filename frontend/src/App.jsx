@@ -4,6 +4,7 @@ import LoginPage from './components/LoginPage'
 import SchemeCard from './components/SchemeCard'
 import AllSchemes from './components/AllSchemes'
 import SavedSchemes from './components/SavedSchemes'
+import About from './components/About'
 import './App.css'
 
 const API_URL = 'https://government-scheme-backend-v6kw.onrender.com'
@@ -220,7 +221,13 @@ function Dashboard({ onNavigate }) {
         </a>
 
         <div className="header-actions">
-          
+          <button
+            className="all-schemes-button about-nav-button"
+            type="button"
+            onClick={() => onNavigate('/about')}
+          >
+            About
+          </button>
 
           <label className="language-picker">
             <span className="globe" aria-hidden="true">
@@ -401,6 +408,10 @@ function Dashboard({ onNavigate }) {
                   </div>
                 </section>
               )}
+
+              <p className="results-page-disclaimer">
+                Information may change. Please confirm on the official website.
+              </p>
             </section>
           )}
         <section className="all-schemes-section">
@@ -500,6 +511,10 @@ function App() {
     />
   )
 }
+
+  if (path === '/about' || path === '/about/') {
+    return <About onBack={() => navigate('/dashboard')} />
+  }
 
   return <Dashboard onNavigate={navigate} />
 }

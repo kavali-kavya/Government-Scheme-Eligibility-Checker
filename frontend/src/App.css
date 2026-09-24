@@ -1029,4 +1029,36 @@ footer {
   .printable-results .verification-date {
     display: none;
   }
+
+  .results-page-disclaimer {
+    display: none;
+  }
+}
+
+.results-page-disclaimer {
+  margin: 24px 0 0;
+  color: #718297;
+  font-size: 0.77rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+@media (max-width: 580px) {
+  .site-header {
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-block: 12px;
+  }
+
+  .header-actions {
+    width: 100%;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .about-nav-button {
+    width: auto;
+    max-width: none;
+  }
 }

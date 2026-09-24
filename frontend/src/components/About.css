@@ -1,0 +1,109 @@
+.about-page {
+  padding-bottom: 54px;
+}
+
+.about-header {
+  margin-bottom: 28px;
+}
+
+.about-content {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.about-panel {
+  padding: 24px;
+  border: 1px solid #d8e2ed;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 8px 22px rgba(27, 66, 104, 0.06);
+}
+
+.about-panel h2 {
+  margin-bottom: 11px;
+  color: #153d6c;
+  font-size: 1.12rem;
+}
+
+.about-panel p {
+  margin: 0;
+  color: #61748a;
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.about-steps {
+  display: grid;
+  gap: 17px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.about-steps li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.about-steps li > span {
+  display: grid;
+  flex: 0 0 27px;
+  place-items: center;
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  background: #eaf1fb;
+  color: #245b91;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.about-steps h3 {
+  margin: 2px 0 5px;
+  color: #345979;
+  font-size: 0.9rem;
+}
+
+.about-steps p {
+  font-size: 0.82rem;
+}
+
+.about-notice {
+  border-left: 4px solid #dc8c00;
+}
+
+.about-report-panel a {
+  display: inline-block;
+  margin-top: 15px;
+  color: #1763a7;
+  font-size: 0.86rem;
+  font-weight: 800;
+  text-underline-offset: 3px;
+}
+
+.about-report-panel a:hover {
+  color: #103f70;
+}
+
+@media (max-width: 700px) {
+  .about-content {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .about-panel {
+    padding: 20px;
+  }
+
+  .about-page {
+    padding-bottom: 34px;
+  }
+
+  .about-nav-button {
+    max-width: 160px;
+  }
+}
